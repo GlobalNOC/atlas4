@@ -34,7 +34,7 @@ Atlas4 Project
 ```
 
 ### HTML
-```
+```HTML
 <!DOCTYPE  html>
 <html  lang="en">
 <head>
@@ -55,7 +55,7 @@ Atlas4 Project
 
 ### Options.js
 The Options.js file lets you define the default values when creating the map. Here are all the options that can be defined.
-```
+```JS
 let  lineHtml  =  `HTML Text to define custom tooltip when hovering over a circuit`
 let  pointHtml  =  `HTML Text to define custom tooltip when hovering over a point`
 
@@ -113,7 +113,7 @@ const  tileOptions  = [
 		name:  'map'
 	},
 	{
-		`url:  'https://api.mapbox.com/styles/v1/mapbox/satellite-v8/tiles/{z}/{x}/{y}',
+		url:  'https://api.mapbox.com/styles/v1/mapbox/satellite-v8/tiles/{z}/{x}/{y}',
 		token:  'Map_Tile_Access_Token',
 		maxZoom:  20,
 		name:  'satellite'
@@ -178,7 +178,7 @@ let  atlasOptions  = {
 
 ### Script.js
 The Script.js file will be used to initialize the Atlas4 Object
-```
+```JS
 let atlas  =  new  Atlas('map-container', atlasOptions);
 
 // Add Topology
