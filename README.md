@@ -179,34 +179,34 @@ let  atlasOptions  = {
 ### Script.js
 The Script.js file will be used to initialize the Atlas4 Object
 ```
-	let atlas  =  new  Atlas('map-container', atlasOptions);
+let atlas  =  new  Atlas('map-container', atlasOptions);
 
-	// Add Topology
-	let network = {
-		name: "Atlas4 Network",
-		endpoints: {
-			"100": {
-				"id": "100",
-				"label": "Endpoint 1",
-				"lat": 42.345,
-				"lng": -96.167448,
-			},
-			"101": {
-				"id": "101",
-				"label": "Endpoint 2",
-				"lat": 22.669533,
-				"lng": -86.25606,
-			}
-		},
-		adjacencies: [
-			{
-				"a": "100",
-				"b": "101",
-				"id": "581223"
-			}	
-		]
-	}
-	
-	atlas.addTopology(network)
+// Add Topology
+let network = {
+    name: "Atlas4 Network",
+    endpoints: {
+        "100": {
+            "id": "100",
+            "label": "Endpoint 1",
+            "lat": 42.345,
+            "lng": -96.167448,
+        },
+        "101": {
+            "id": "101",
+            "label": "Endpoint 2",
+            "lat": 22.669533,
+            "lng": -86.25606,
+        }
+    },
+    adjacencies: [
+        {
+            "a": "100",
+            "b": "101",
+            "id": "581223"
+        }	
+    ]
+}
+
+atlas.addTopology(network)
 ```
 
