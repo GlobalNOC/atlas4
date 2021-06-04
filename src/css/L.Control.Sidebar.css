@@ -1,0 +1,339 @@
+:root {
+  --sidebar-width: 250px;
+}
+
+.atlas-editor-sidebar-container {
+  background: rgba(0, 0, 0, 0.3);
+  margin: 0 !important;
+  height: 100%;
+  width: var(--sidebar-width);
+}
+
+.atlas-editor-sidebar {
+  position: absolute;
+  height: 100%;
+  width: var(--sidebar-width);
+  background: rgb(255, 255, 255);
+  top: 0;
+  left: 100%;
+  transform: translate(-100%,0);
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+/* Sidebar General Info Window */
+.editor-sidebar-general-info {
+  width: 100%;
+  margin-bottom: 40px;
+  /* border: 1px solid grey; */
+}
+
+.editor-sidebar-general-info p {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 5px 0;
+  margin-bottom: 0px;
+  color: rgb(66, 69, 71);
+}
+
+.editor-sidebar-general-info h1 {
+  color: rgb(65, 65, 70);
+  margin: 5px 0;
+  font-size: 24px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.editor-sidebar-general-info h2 {
+  color: rgb(65, 65, 70);
+  margin: 2px 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+/* END: Sidebar General Info Window */
+
+/* Sidebar Node Properties Window */
+.sidebar-node-properties, .sidebar-line-properties {
+  font-size: 0;
+  margin-bottom: 30px;
+}
+
+.sidebar-window-description {
+  text-transform: uppercase;
+  font-size: 10px;
+  margin: 0;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.sidebar-form-label {
+  display: block;
+  text-transform: uppercase;
+  position: relative;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500px;
+  letter-spacing: 1px;
+  color: rgb(66, 69, 71);
+  margin-bottom: 3px;
+}
+
+.sidebar-size-label-desc {
+  position: absolute;
+  left: 100%;
+  transform: translate(-100%, 0);
+  display: inline-block;
+}
+
+.atlas-editor-sidebar [type="text"] {
+  display: block;
+  font-size: 14px;
+  line-height: 18px;
+  outline: none;
+  margin-bottom: 10px;
+  color: #545454;
+  background: white;
+  border: 1px solid rgb(136 136 154);
+  padding: 4px 8px;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.atlas-editor-sidebar [type="range"] {
+  height: 24px;
+  width: calc(100% - 6px);
+  border: none;
+  outline: none;
+}
+
+.atlas-editor-sidebar [type="color"] {
+  display: none;
+}
+
+.sidebar-npw-color-wrapper {
+  height: 24px;
+  background: #6785d4;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.sidebar-window-button {
+  display: inline-block;
+  width: 30%;
+  margin-top: 0px;
+  /* margin-right: 3%; */
+  height: 32px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid rgb(75, 74, 74);
+  background: white;
+  color: black;
+}
+
+.sidebar-window-button:hover {
+  background: rgb(194, 194, 194);
+}
+
+.npw-btns-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 8px;
+}
+
+
+/* END: Sidebar Node Properties Window */
+
+/* Sidebar Tool Info Window */
+.sidebar-tool-info-description {
+  color: rgb(122, 130, 141);
+  font-style: italic;
+  font-size: 12px;
+  margin: 0;
+  margin-top: -8px;
+}
+
+.sidebar-tool-info {
+  margin-bottom: 30px;
+}
+
+/* END: Sidebar Tool Info Window */
+
+/* Sidebar JSON Window */
+.sidebar-window-textarea {
+  width: 100%;
+  white-space: nowrap;
+  font-family: monospace;
+  height: 375px;
+  resize: none;
+  box-sizing: border-box;
+}
+
+#sidebar-json-button {
+  margin-top: 8px;
+  width: 40%;
+}
+/* END: Sidebar JSON Window */
+
+/* Line Editor Window */
+
+.sidebar-line-edit-window {
+  width: 100%;
+}
+
+#sidebar-curve-type-container {
+  width: 100%;
+  /* background: yellowgreen; */
+}
+
+#sidebar-edit-anchor-cont {
+  margin-top: 15px;
+}
+
+.sidebar-line-edit-opt-cont {
+  width: 100%;
+  /* background: red; */
+  margin: 0;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  height: 42px;
+  border-radius: 4px;
+  font-size: 0;
+  border: 1px solid rgb(66, 69, 71);
+}
+
+.sidebar-line-edit-opt-cont span {
+  box-sizing: border-box;
+  font-size: 21px;
+  display: inline-block;
+  text-align: center;
+  line-height: 42px;
+  height: 100%;
+  color: rgb(66, 69, 71);
+  cursor: pointer;
+  border-right: 1px solid rgb(66, 69, 71);
+}
+
+.frThree span {
+  width: 33.3333%;
+}
+
+.frTwo span {
+  width: 50%;
+  font-size: 24px;
+  line-height: 38px;
+}
+
+.frThree span:nth-of-type(3) {
+  border: none;
+}
+
+.frTwo span:nth-of-type(2) {
+  border: none;
+}
+
+.sidebar-line-edit-opt-cont span:hover {
+  background: rgb(225, 231, 235);
+}
+
+[selectedCurve="true"] {
+  background: rgba(66, 69, 71, 0.8);
+  color: white !important;
+}
+
+[selectedCurve="true"]:hover {
+  background: rgba(66, 69, 71, 0.6) !important;
+}
+
+/* END: Line Editor Window */
+
+/* END: Line Editor Window */
+
+/* JSON Properties  Window */
+.sidebar-properties-json-textarea {
+  height: 200px;
+  outline: none;
+}
+
+.sidebar-properties-json {
+  margin-top: 10px;
+}
+
+.sidebar-properties-json label span {
+  color: red;
+  font-size: 0.8em;
+  position: absolute;
+  right: 0;
+  display: inline-block;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+/* END: JSON Properties Window */
+
+#sidebar-lpw-metadata {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.sidebar-lpw-metadata-kv-cont {
+  margin-top: 15px;
+}
+
+.txtbox-2 {
+  display: inline-block !important;
+  width: calc(50% - 15px) !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  outline: none !important;
+  margin-bottom: 5px !important;
+  margin-right: 5px !important;
+  color: #545454 !important;
+}
+
+.sidebar-window-button-full {
+  display: inline-block;
+  margin-top: 0px;
+  height: 32px;
+  border: 1px solid rgb(75, 74, 74);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  background: white;
+  color: black;
+}
+
+.sidebar-window-button-full:hover {
+  background: rgb(219, 219, 219);
+}
+
+.sidebar-form-label-2 {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 12px;
+  width: 50%;
+  font-weight: 500px;
+  letter-spacing: 1px;
+  color: rgb(66, 69, 71);
+  margin-bottom: 3px;
+}
+
+/* Topology Edit Window */
+
+#sidebar-topology-window {
+  font-size: 0;
+}

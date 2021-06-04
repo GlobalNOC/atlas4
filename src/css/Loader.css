@@ -1,0 +1,17 @@
+.atlas4-loader {
+    height: 100%;
+    width: 100%;
+    background: #101117;
+    z-index: 9999;
+    position: absolute;
+}
+
+.atlas4-loader div {
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

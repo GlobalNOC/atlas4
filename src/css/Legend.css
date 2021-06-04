@@ -1,0 +1,48 @@
+
+.atlas4-legends {
+    padding: 0;
+    position: absolute;
+    display: flex;
+    width: auto;
+    height: auto;
+    z-index: 400; /* Above Map, Below Controls */
+}
+
+.atlas4-legend {
+    display: flex;
+    margin: 2px;
+    z-index: 401; /* Above Map and Container, Below Controls */
+}
+
+.legend-colors {
+    display: flex;
+}
+
+.legend-color {
+    height: 10px;
+    width: 10px;
+}
+
+.legend-labels {
+    display: flex;
+}
+
+.legend-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    width: auto;
+    color: black;
+    mix-blend-mode: difference;
+}
+
+.min {
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.max {
+    align-items:center;
+    justify-content: flex-end;
+}

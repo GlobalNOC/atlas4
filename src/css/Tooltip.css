@@ -1,0 +1,101 @@
+.leaflet-popup-tip-container, .leaflet-popup-close-button {
+    opacity: 0;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    border-radius: 0 !important;
+    box-shadow: none;
+    background: none;
+    /* background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 50%) !important;
+    color: white !important; */
+}
+
+.atlas4-tt-container * {
+    margin: 0;
+}
+/*
+.leaflet-popup-content-wrapper {
+    padding: 0.5rem;
+} */
+/* 
+.leaflet-popup-content {
+    margin: 0 !important;
+}
+
+.atlas4-tt {
+}
+
+.atlas4-tt-container {
+    margin:0 auto;
+    padding:0;
+    display:flex;
+    flex-flow:column nowrap;
+    width:auto;
+    height:100%;
+}
+
+.atlas4-tt-image {
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    height: 78%;
+    max-height: 100px;
+    width: 100%;
+    padding:5px;
+    object-fit: contain;
+    left: 0;
+    bottom: 10%;
+}
+
+.atlas4-tt-topology,
+.atlas4-tt-label {
+    text-align: center !important;
+}
+
+.atlas4-tt-topology {
+    border-bottom: 1px solid white;
+}
+
+.atlas4-tt-label {
+    font-style: italic;
+}
+
+.atlas4-tt-columns {
+    margin:0; 
+    padding:0 0 0.5rem 0; 
+    display:flex;
+    flex-flow:row nowrap;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+}
+
+.atlas4-tt-column {
+    margin:0 10px; 
+    display:flex; 
+    flex-flow:column nowrap; 
+    align-items: center; 
+    width:48%;
+}
+
+.atlas4-tt-column-header {
+}
+
+.atlas4-tt-data {
+    margin: 0 !important;
+    color: white !important;
+    font-size: 0.9rem !important;
+
+}
+
+.atlas4-tt-column-line {
+    width: 48%;
+}
+
+.atlas4-tt-column-point {
+    width: 100%;
+} */

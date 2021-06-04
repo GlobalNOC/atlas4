@@ -1,0 +1,142 @@
+<div class="atlas-editor-sidebar">
+    <div class="editor-sidebar-general-info">
+        <p>Topology</p>
+        <h1 class="editor-gi-topology">-</h1>
+        <p>Tool</p>
+        <h2 class="editor-gi-tool">-</h2>
+    </div>
+
+    <div class="sidebar-tool-info" style="display: none;">
+        <p class="sidebar-window-description">Tool Information</p>
+        <p class="sidebar-tool-info-description">
+        </p>
+    </div>
+
+    <div class="sidebar-node-properties" id="sidebar-npw-window" style="display: none;">
+
+        <p class="sidebar-window-description">Set Node Properties</p>
+
+        <label class="sidebar-form-label">Name</label>
+        <input type="text" id="npw-name">
+        <!-- <label class="sidebar-form-label" id="npw-id-label">id</label>
+        <input type="text" id="npw-id"> -->
+        <label class="sidebar-form-label">label</label>
+        <input type="text" id="npw-label">
+        <label class="sidebar-form-label">Size<span class="sidebar-size-label-desc"
+                id="npw-size-label">-px</span></label>
+        <input type="range" id="npw-size" min="1" max="50">
+        <label class="sidebar-form-label">Color</label>
+
+        <div class="sidebar-color-container">
+            <div class="sidebar-npw-color-wrapper" id="npw-color-wrap"></div>
+            <input type="color" id="npw-color" value="#6785d4">
+        </div>
+        
+        <div class="npw-btns-container">
+            <button class="sidebar-window-button" style="margin-top: 15px; width: 100%;" id="npw-save">Save</button>
+            <button class="sidebar-window-button" style="margin-top: 15px; width: 100%;" id="npw-cancel">Cancel</button>
+            <button class="sidebar-window-button" style="margin-top: 15px; width: 100%;" id="npw-delete">Delete</button>
+            <button class="sidebar-window-button" style="margin-top: 10px; width: 100%;" id="npw-more" activeOpen="false">More</button>
+        </div>
+        
+        <div class="sidebar-properties-json" id="sidebar-npw-properties-json" style="display: none;">
+            <label class="sidebar-form-label">JSON <span style="display: none;" id="npw-json-status">Invalid JSON</span>
+            </label>
+            <textarea spellcheck="false" id="sidebar-npw-json-textarea"
+                class="sidebar-window-textarea sidebar-properties-json-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="sidebar-json-window" id="sidebar-json-window" style="display: none;">
+        <p class="sidebar-window-description" id="sidebar-json-window-desc">GET Map JSON</p>
+        <textarea spellcheck="false" class="sidebar-window-textarea" id="sidebar-json-textarea"></textarea>
+        <button class="sidebar-window-button" id="sidebar-json-button">Copy</button>
+    </div>
+
+    <div class="sidebar-line-edit-window" id="sidebar-line-edit-window" style="display: none;">
+        <p class="sidebar-window-description">Set Line Curve Properties</p>
+
+        <div id="sidebar-edit-anchor-cont">
+            <label class="sidebar-form-label">Add/Delete Anchor</label>
+            <p id="sidebar-edit-anchor-opt-cont" class="sidebar-line-edit-opt-cont frTwo">
+                <span class="edit-anchor-type">+</span>
+                <span class="edit-anchor-type">-</span>
+            </p>
+        </div>
+
+        <div id="sidebar-curve-type-container">
+            <label class="sidebar-form-label">Curve Type</label>
+            <p id="sidebar-curve-opt-cont" class="sidebar-line-edit-opt-cont frThree">
+                <span selectedCurve="false" class="sidebar-curve-opt-type">L</span>
+                <span selectedCurve="false" class="sidebar-curve-opt-type">C</span>
+                <span selectedCurve="false" class="sidebar-curve-opt-type">Q</span>
+            </p>
+        </div>
+
+    </div>
+
+    <div class="sidebar-line-properties" id="sidebar-lpw-window" style="display: none;">
+        <!-- A, B, Label, Color, Weight -->
+        <p class="sidebar-window-description">Set Line Properties</p>
+        <label class="sidebar-form-label">Endpoint A</label>
+        <input type="text" id="lpw-epa" readonly>
+        <label class="sidebar-form-label">Endpoint B</label>
+        <input type="text" id="lpw-epb" readonly>
+        <label class="sidebar-form-label">Label</label>
+        <input type="text" id="lpw-label">
+        <label class="sidebar-form-label">Weight<span class="sidebar-size-label-desc"
+                id="lpw-weight-label">3</span></label>
+        <input type="range" id="lpw-weight" min="1" max="50" value="3">
+        <label class="sidebar-form-label">Color</label>
+        <div class="sidebar-color-container">
+            <div class="sidebar-npw-color-wrapper" id="lpw-color-wrap"></div>
+            <input type="color" id="lpw-color" value="#6785d4">
+        </div>
+        <button class="sidebar-window-button" style="margin-top: 12px; outline: none; width: 100%;" id="lpw-delete">Delete Line</button>
+        <div id="sidebar-lpw-metadata">
+            <label class="sidebar-form-label">Edit Metadata</label>
+            <button class="sidebar-window-button-full" id="lpw-metadata-manage">Manage Properties</button>
+        </div>
+
+        <!-- <button class="sidebar-window-button" id="lpw-save">Save</button>
+        <button class="sidebar-window-button" id="lpw-cancel">Cancel</button> -->
+        <label class="sidebar-form-label">JSON</label>
+        <button class="sidebar-window-button" id="lpw-more" activeOpen="false">More</button>
+
+        <div class="sidebar-properties-json" id="sidebar-lpw-properties-json" style="display: none;">
+            <label class="sidebar-form-label">JSON <span id="lpw-json-status" style="display: none;">Invalid JSON</span>
+            </label>
+            <textarea spellcheck="false" id="sidebar-lpw-json-textarea"
+                class="sidebar-window-textarea sidebar-properties-json-textarea"></textarea>
+        </div>
+
+    </div>
+
+    <div class="sidebar-topology-properties" id="sidebar-topology-window" style="display: none;">
+                
+        <p class="sidebar-window-description">Edit Topology</p>
+        
+        <label class="sidebar-form-label" style="margin-top: 12px;">Map Background</label> 
+        <button class="sidebar-window-button-full" style="margin-bottom: 12px;" id="tew-change-map-tile">Add/Change Tiles</button>
+
+        <div id="sidebar-tew-metadata">
+            <label class="sidebar-form-label">Set Topology Attributes</label>    
+            <button class="sidebar-window-button-full" id="tew-metadata-manage">Manage Properties</button>
+        </div>
+
+        <label class="sidebar-form-label" style="margin-top: 12px;">Edit Topology</label> 
+        <button class="sidebar-window-button-full" id="tew-delete-topology">Delete Topology</button>
+
+        <p style="margin-top: 24px;" class="sidebar-window-description">Edit Existing Tile</p>
+        <label class="sidebar-form-label">Dimensions</label>
+        <input style="display: inline-block; width: 50px;" type="text" id="tew-tile-height">
+        <span style="font-size: 12px;position: relative;top: -2px;">&nbsp;&times;&nbsp;</span>
+        <input style="display: inline-block; width: 50px;" type="text" id="tew-tile-width">
+        <span style="font-size: 12px;position: relative;top: 1px;">
+            &nbsp;
+            <input id="tew-tile-preserve-aspect-ratio" type="checkbox" name="" id="" checked>
+            &nbsp;
+        </span>
+    </div>
+
+</div>

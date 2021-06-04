@@ -1,0 +1,32 @@
+{
+  "name": "globalnoc-atlas4",
+  "version": "0.0.1",
+  "description": "atlas4 library for web network topology maps",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --mode=development",
+    "build": "webpack --mode=production",
+    "grafana": "cp -av lib/. ~/Desktop/globalnoc-worldview-panel/src/lib/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "file-loader": "^4.2.0",
+    "html-loader": "^0.5.5",
+    "require": "^2.4.20",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-loaders": "^1.0.0"
+  },
+  "dependencies": {
+    "@elfalem/leaflet-curve": "^0.7.0",
+    "leaflet": "^1.4.0"
+  }
+}
