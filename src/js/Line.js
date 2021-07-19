@@ -19,7 +19,9 @@ export default class Line {
         // This will break everything about the default/config system
 
         /** Set the dataTarget from the options */
-        this.dataTarget = this.options.dataTarget;
+        this.dataTarget = adjacency.metadata?.dataTarget || this.options.dataTarget || 'chooseMax';
+        this.dataAggregate = adjacency.metadata?.dataAggregate || this.options.dataAggregate || 'first';
+        this.colorCriteria = adjacency.metadata?.colorCriteria || this.options.colorCriteria || 'now';
         this.units = this.options.units;
 
         /** Line options from the Topology */
@@ -216,26 +218,30 @@ export default class Line {
     _color(dataTarget = this.dataTarget) {
         let value;
         let color;
-        let criteria = this.dataTarget.split(".");
 
-        // Select the correct value from the data using the dataTarget
-        if (!dataTarget) {
-            value = undefined;
-        } else if (criteria.length < 2) {
-            value = this.data[dataTarget];
-        } else {
-            let ref = this.data;
-            for (let i = 0; i < criteria.length; i++) {
-                if (!ref) {
-                    value = undefined;
-                    break;
-                }
-                if (i === criteria.length - 1) {
-                    value = ref[criteria[i]];
-                } else {
-                    ref = ref[criteria[i]];
-                }
+        let dataValues = this.data?.dataValues
+        let dataValuesKeys = dataValues ? Object.keys(dataValues) : []
+
+        if (this.dataTarget === 'chooseMax' && dataValues) {
+            let dataValueNames = Object.keys(dataValues)
+            let values = dataValueNames.map(valueName => {
+                return dataValues[valueName][this.colorCriteria]
+            })
+
+            if (values.length) {
+                value = Math.max(...values)
             }
+        } else if (this.dataTarget === 'chooseMin' && dataValues) {
+            let dataValueNames = Object.keys(dataValues)
+            let values = dataValueNames.map(valueName => {
+                return dataValues[valueName][this.colorCriteria]
+            })
+
+            if (values.length) {
+                value = Math.min(...values)
+            }
+        } else if (dataValuesKeys.includes(this.dataTarget) && dataValues) {
+            value = dataValues[this.dataTarget][this.colorCriteria]
         }
 
         // Get the color from the legend with the value retrieved

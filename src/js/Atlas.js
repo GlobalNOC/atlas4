@@ -725,8 +725,10 @@ export default class Atlas {
             opacity: 1,
             smoothFactor: 1,
             color: "#555555",
-            dataTarget: "input.now",
             units: "bits",
+            dataAggregate: "first",
+            dataTarget: "max",
+            colorCriteria: "now",
         };
 
         // TODO: Add key-checking for all possible options
@@ -785,170 +787,29 @@ export default class Atlas {
     }
 
     requestCircuitData(topology, subqueries) {
-        let queryParameters = {
-            name: topology.name,
-            start: "now-20m",
-            end: "now",
-        };
 
-        let FD = new FormData();
-
-        for (const key in queryParameters) {
-            FD.append(key, queryParameters[key]);
-        }
-
-        let setData = this.setCircuitData.bind(this);
+        let applyData = this.applyData.bind(this);
         let url = this.options.minimapConfig.data;
-        fetch(url, { method: "post", body: FD })
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: topology.name,
+                start: 'now-15m',
+                end: 'now'
+            })
+        })
             .then((data) => data.json())
             .then((data) => {
-                setData(topology, data.results);
+                applyData(data.results, topology.name);
             })
             .catch((e) => {
                 console.log(e);
                 this.showError();
             });
-    }
-
-    setCircuitData(topology, results) {
-        if (!results || results.length < 1 || !topology) {
-            return;
-        }
-
-        // Create a raw data map of node->intf->data for target matching
-        let lookup = {};
-        for (let res of results) {
-            if (!lookup[res.node]) lookup[res.node] = {};
-            lookup[res.node][res.intf] = res;
-            if (res.alternate_intf && res.intf != res.alternate_intf)
-                lookup[res.node][res.alternate_intf] = res;
-        }
-
-        for (let line of topology.lines) {
-            let in_now = -1;
-            let in_min;
-            let in_max;
-            let in_tot = 0;
-            let in_count = 0;
-
-            let out_now = -1;
-            let out_min;
-            let out_max;
-            let out_tot = 0;
-            let out_count = 0;
-
-            if (!line.metadata || !line.metadata.targets) continue;
-
-            let registered = false;
-            // if (line.label.includes('7749')) {
-            //     debugger;
-            // }
-            for (let target of line.metadata.targets) {
-                if (
-                    !lookup[target.node_name] ||
-                    !lookup[target.node_name][target.interface_name] ||
-                    registered
-                )
-                    continue;
-
-                if (
-                    lookup[target.node_name][target.interface_name].output ==
-                    null
-                )
-                    continue;
-                if (
-                    lookup[target.node_name][target.interface_name].input ==
-                    null
-                )
-                    continue;
-
-                let input =
-                    lookup[target.node_name][
-                        target.interface_name
-                    ].input.reverse();
-                let output =
-                    lookup[target.node_name][
-                        target.interface_name
-                    ].output.reverse();
-
-                for (const entry of input) {
-                    if (entry[1] == undefined) continue;
-                    if (in_now == -1) {
-                        in_now = entry[1];
-                        in_min = entry[1];
-                        in_max = entry[1];
-                        in_tot += entry[1];
-                        in_count++;
-                    } else {
-                        if (entry[1] < in_min) in_min = entry[1];
-                        if (entry[1] > in_max) in_max = entry[1];
-                        in_tot += entry[1];
-                        in_count++;
-                    }
-                }
-
-                for (const entry of output) {
-                    if (entry[1] == undefined) continue;
-                    if (out_now == -1) {
-                        out_now = entry[1];
-                        out_min = entry[1];
-                        out_max = entry[1];
-                        out_tot += entry[1];
-                        out_count++;
-                    } else {
-                        if (entry[1] < out_min) out_min = entry[1];
-                        if (entry[1] > out_max) out_max = entry[1];
-                        out_tot += entry[1];
-                        out_count++;
-                    }
-                }
-
-                registered = true;
-            }
-
-            if (
-                !in_now == undefined ||
-                !out_now == undefined ||
-                in_now == -1 ||
-                out_now == -1
-            )
-                continue;
-
-            let inp = {
-                now: in_now,
-                min: in_min,
-                max: in_max,
-                avg: in_tot / in_count,
-            };
-
-            let out = {
-                now: out_now,
-                min: out_min,
-                max: out_max,
-                avg: out_tot / in_count,
-            };
-
-            // Create the data object
-            let data;
-            // Create the data object
-            if (inp.now > out.now) {
-                data = {
-                    label: line.data.label,
-                    input: inp,
-                    output: out,
-                };
-            } else {
-                data = {
-                    label: line.data.label,
-                    input: out,
-                    output: inp,
-                };
-            }
-
-            // Set the data for the Line
-            line.set("data", data);
-        }
-        // this.hideLoader()
     }
 
     showLoader() {
@@ -1085,6 +946,137 @@ export default class Atlas {
             for (const callback of this.events[event]) {
                 callback();
             }
+        }
+    }
+
+    applyData(data, topology = 'all') {
+        let topologies;
+
+        if (!topology || topology === 'all') {
+            topologies = this.get('topologies')
+        } else {
+            topologies = {}
+            topologies[topology] = this.get('topologies')[topology]
+        }
+
+        if (!Object.keys(topologies).length) return
+
+        for (const topologyName in topologies) {
+            let topology = topologies[topologyName]
+            if (!topology) {
+                console.info(`Topology - ${topologyName} doesn't exists!`)
+                continue
+            }
+            let lines = topology.lines
+
+            for (const line of lines) {
+                let lineData = {
+                    ...line.metadata,
+                    label: line.label,
+                    dataValues: {
+
+                    }
+                }
+
+                let lineDataTargets = line.metadata?.data_targets || []
+
+                // Will be used to prevent summing duplicate data target names
+                let dataTargetCache = []
+
+                for (const dataPoint of data) {
+                    let aggregateGroup;
+                    let aggregateGroupName;
+                    if (lineDataTargets.includes(dataPoint.data_target)) {
+                        if (!dataPoint?.values) continue;
+                        let values = dataPoint.values.reverse()
+
+                        let now = values.reduce(getNow, null)
+                        let min = values.reduce(getMin, null)
+                        let max = values.reduce(getMax, null)
+
+                        let sum = values.reduce(getSum, 0)
+                        let count = values.reduce(getCount, 0)
+                        let avg = count === 0 ? 0 : count ? sum / count : undefined
+
+                        aggregateGroupName = dataPoint.aggregate_group ? dataPoint.aggregate_group : undefined;
+                        aggregateGroup = {
+                            now,
+                            min,
+                            max,
+                            avg
+                        }
+                    }
+
+                    if (line.dataAggregate == 'first') {
+                        if (!isAggregateGroupAlreadyDefined(aggregateGroupName, lineData) && isDataDefined(aggregateGroup)) {
+                            lineData['dataValues'][aggregateGroupName] = aggregateGroup;
+                        }
+                    } else if (line.dataAggregate == 'sum' && !dataTargetCache.includes(dataPoint.data_target)) {
+                        if (!isAggregateGroupAlreadyDefined(aggregateGroupName, lineData) && isDataDefined(aggregateGroup)) {
+                            lineData['dataValues'][aggregateGroupName] = aggregateGroup;
+                            dataTargetCache.push(dataPoint.data_target)
+                        } else if (isAggregateGroupAlreadyDefined(aggregateGroupName, lineData) && isDataDefined(aggregateGroup)) {
+                            sumData(lineData['dataValues'][aggregateGroupName], aggregateGroup)
+                            dataTargetCache.push(dataPoint.data_target)
+                        }
+                    }
+                }
+
+                line.set('data', lineData)
+            }
+
+
+        }
+
+
+        function getNow(now, currentValue) {
+            if (!now) {
+                now = currentValue[1]
+            }
+            return now
+        }
+
+        function getMin(min, currentValue) {
+            if ((!min && currentValue[1] != undefined) || (min > currentValue[1] && currentValue[1] != undefined)) {
+                min = currentValue[1]
+            }
+            return min
+        }
+
+        function getMax(max, currentValue) {
+            if ((!max && currentValue[1] != undefined) || (max < currentValue[1] && currentValue[1] != undefined)) {
+                max = currentValue[1]
+            }
+            return max
+        }
+
+        function getSum(sum, currentValue) {
+            return sum + currentValue[1]
+        }
+
+        function getCount(count, currentValue) {
+            if (currentValue[1]) count++;
+            return count
+        }
+
+        function isAggregateGroupAlreadyDefined(aggregateGroupName, lineData) {
+            let aggregateGroup = lineData?.['dataValues']?.[aggregateGroupName]
+            return isDataDefined(aggregateGroup)
+        }
+
+        function isDataDefined(aggregateGroup) {
+            return aggregateGroup != undefined &&
+                aggregateGroup.now != undefined &&
+                aggregateGroup.min != undefined &&
+                aggregateGroup.max != undefined &&
+                aggregateGroup.avg != undefined ? true : false
+        }
+
+        function sumData(currentAggregateGroup, newAggregateGroup) {
+            currentAggregateGroup.now += newAggregateGroup.now
+            currentAggregateGroup.min += newAggregateGroup.min
+            currentAggregateGroup.max += newAggregateGroup.max
+            currentAggregateGroup.avg += newAggregateGroup.avg
         }
     }
 }
