@@ -214,6 +214,11 @@
   border: 1px solid rgb(66, 69, 71);
 }
 
+.frThree {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .sidebar-line-edit-opt-cont span {
   box-sizing: border-box;
   font-size: 21px;
@@ -226,12 +231,13 @@
   border-right: 1px solid rgb(66, 69, 71);
 }
 
-.frThree span {
-  width: 33.3333%;
+.frTwo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .frTwo span {
-  width: 50%;
+  display: block;
   font-size: 24px;
   line-height: 38px;
 }

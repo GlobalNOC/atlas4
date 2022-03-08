@@ -263,6 +263,11 @@ export default class Atlas {
         return url;
     }
 
+    addTile(tileConfig) {
+        if (this.tiles[tileConfig.name]) this.tiles[tileConfig.name].removeFrom(this.map);
+        this.tiles[tileConfig.name] = L.tileLayer(this.createTileUrl(tileConfig), tileConfig);
+    }
+
     /** Add the tile layer to the map using tile options*/
     createTiles() {
         for (const tile of this.options.tiles) {
@@ -883,6 +888,33 @@ export default class Atlas {
         this.updateTopologyData();
     }
 
+    changeCircuitColoringProperties(property, value) {
+        let topologies = this.topologies;
+        for (const topology in topologies) {
+            let lines = topologies[topology].lines
+            switch (property) {
+                case 'dataTarget':
+                    lines.forEach(l => {
+                        l.dataTarget = l.metadata?.dataTarget || value || 'chooseMax';
+                    })
+                    this.updateTopologyData();
+                    break;
+                case 'dataAggregate':
+                    lines.forEach(l => {
+                        l.dataAggregate = l.metadata?.dataAggregate || value || 'first';
+                    })
+                    this.updateTopologyData();
+                    break;
+                case 'colorCriteria':
+                    lines.forEach(l => {
+                        l.colorCriteria = l.metadata?.colorCriteria || value || 'now';
+                    })
+                    this.updateTopologyData();
+                    break;
+            }
+        }
+    }
+
     updateTopologyData() {
         let topologies = this.topologies;
         for (const topology in topologies) {
@@ -988,7 +1020,7 @@ export default class Atlas {
                     let aggregateGroupName;
                     if (lineDataTargets.includes(dataPoint.data_target)) {
                         if (!dataPoint?.values) continue;
-                        let values = dataPoint.values.reverse()
+                        let values = JSON.parse(JSON.stringify(dataPoint.values)).reverse()
 
                         let now = values.reduce(getNow, null)
                         let min = values.reduce(getMin, null)
