@@ -53,8 +53,22 @@ export default class Tooltip {
             l.on('mouseover', function (e) {
                 if (!this.clicked) {
                     let tooltip = this.getPopup();
+
+                    // Initializing a random position
                     tooltip.setLatLng(e.latlng);
+
+                    // Creating the actual HTML element
                     tooltip.openOn(this._map);
+
+                    let tooltipDetails = tooltip._wrapper.getBoundingClientRect();
+                    console.log(tooltipDetails)
+
+                    if (e.containerPoint.y < tooltipDetails.height) {
+                        let newTooltipPosContainerY = e.containerPoint.y + tooltipDetails.height + 30;
+                        let newTooltipPos = this._map.containerPointToLatLng({x: e.containerPoint.x, y: newTooltipPosContainerY});
+                        tooltip.setLatLng(newTooltipPos);
+                    }
+                    
                 }
             });
             l.on('mouseout', function (e) {
