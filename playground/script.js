@@ -1,0 +1,1 @@
+let atlas = new Atlas('atlas-map', testOptions)

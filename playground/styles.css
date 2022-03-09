@@ -1,0 +1,8 @@
+* {
+  margin: 0;
+}
+
+#atlas-map {
+  background: red;
+  height: 600px;
+}
