@@ -44,6 +44,7 @@ export default class Tooltip {
             l.on('click', function (e) {
                 let tooltip = this.getPopup();
                 tooltip.setLatLng(e.latlng);
+                console.log('tooltip', tooltip);
                 tooltip.openOn(this._map);
                 constrainPosition(e, tooltip);
                 this.clicked = true;
@@ -125,6 +126,7 @@ export default class Tooltip {
                 l.on('click', function (e) {
                     let tooltip = this.getPopup();
                     tooltip.setLatLng(e.latlng);
+                    console.log('tooltip', tooltip);
                     tooltip.openOn(this._map);
                     constrainPosition(e, tooltip);
                     this.clicked = true;
@@ -195,23 +197,20 @@ export default class Tooltip {
     }
 
     constrainPosition(event, tooltip) {
-        /*  
-        v1 Notes
-        - Assume initial position is set: centered above mouse event, 
-        check cardinal directions for OOB (out-of-bounds) clockwise: N,E,S,W
-        TODOS:
-        - For first version of this fix, OOB cases on E-W axis will be at 
-        most 0.5 * popup width (assume e should always be within the viewable panel)
-        and cases to the south could only be caused by a OOB north correction.
-        - In a single run, corrections occuring on the same axis will need additional
-        adjustment by zoom/scale, which usually disrupts mouseover event state.
-        - We base the new tooltip position on the event, and apply our own offset
-            - This disregards the initial offset between the tooltip and the source 
-            (in Atlas, a Line or Point). Attempts to update tooltip.options.offset directly
-            affect the source position, disrupting the topology.
-        - For the above reasons, we check the OOB status of each side based on the container,
-        not the event, to account for any transformations we may have previously applied. Thus, 
-        corner OOB cases are resolved by two or more distinct transformations
+        /*
+        We assume the tooltip has already been rendered in the DOM, default position: centered above mouse event/ 
+        Check cardinal directions for OOB (out-of-bounds) clockwise, applying a correction to each as needed.
+        TODO/further assumptions:
+        - Events passed in will occur on coordinates within the bounds of the map panel
+            - This is the basis for static correction distances, i.e. tooltip.width * 0.5
+            TODO: Rework to include dynamic correction distances, i.e. based difference of frame and tooltip bounds
+        - We base the new tooltip position on the event position, and apply our own offset
+            - This disregards the default offset between the tooltip and the source 
+            (in Atlas4, a Line or Point). Attempts to update tooltip.options.offset directly
+            affect source object, disrupting how the topology features render.
+        - For this reason, we check boundaries based on the container and tooltip,
+        not the event, to account for any transformations we may have previously applied 
+        (meaning that tooltip position cannot be inferred from event position).
         */
        
         let map = tooltip._map;
