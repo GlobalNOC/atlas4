@@ -37,14 +37,15 @@ export default class Tooltip {
             this.sourceLayer = [this.sourceLayer];
         }
 
-
         /** Bind the Tooltip Event Handlers */
         for (let l of this.sourceLayer) {
+            let constrainPosition = this.constrainPosition.bind(this);
             l.bindPopup(this.layer);
             l.on('click', function (e) {
                 let tooltip = this.getPopup();
                 tooltip.setLatLng(e.latlng);
                 tooltip.openOn(this._map);
+                constrainPosition(e, tooltip);
                 this.clicked = true;
             });
             l.on('popupclose', function (e) {
@@ -55,7 +56,8 @@ export default class Tooltip {
                     let tooltip = this.getPopup();
                     tooltip.setLatLng(e.latlng);
                     tooltip.openOn(this._map);
-                }
+                    constrainPosition(e, tooltip);
+               }
             });
             l.on('mouseout', function (e) {
                 if (!this.clicked) {
@@ -117,12 +119,14 @@ export default class Tooltip {
     show() {
         for (let l of this.sourceLayer) {
             // if there's no popup, bind popup
+            let constrainPosition = this.constrainPosition.bind(this);
             if (!l.getPopup()) {
                 l.bindPopup(this.layer);
                 l.on('click', function (e) {
                     let tooltip = this.getPopup();
                     tooltip.setLatLng(e.latlng);
                     tooltip.openOn(this._map);
+                    constrainPosition(e, tooltip);
                     this.clicked = true;
                 });
                 l.on('popupclose', function (e) {
@@ -133,6 +137,7 @@ export default class Tooltip {
                         let tooltip = this.getPopup();
                         tooltip.setLatLng(e.latlng);
                         tooltip.openOn(this._map);
+                        constrainPosition(e, tooltip);
                     }
                 });
                 l.on('mouseout', function (e) {
@@ -189,6 +194,53 @@ export default class Tooltip {
         this.show()
     }
 
+    constrainPosition(event, tooltip) {
+        /*  
+        v1 Notes
+        - Assume initial position is set: centered above mouse event, 
+        check cardinal directions for OOB (out-of-bounds) clockwise: N,E,S,W
+        TODOS:
+        - For first version of this fix, OOB cases on E-W axis will be at 
+        most 0.5 * popup width (assume e should always be within the viewable panel)
+        and cases to the south could only be caused by a OOB north correction.
+        - In a single run, corrections occuring on the same axis will need additional
+        adjustment by zoom/scale, which usually disrupts mouseover event state.
+        - We base the new tooltip position on the event, and apply our own offset
+            - This disregards the initial offset between the tooltip and the source 
+            (in Atlas, a Line or Point). Attempts to update tooltip.options.offset directly
+            affect the source position, disrupting the topology.
+        - For the above reasons, we check the OOB status of each side based on the container,
+        not the event, to account for any transformations we may have previously applied. Thus, 
+        corner OOB cases are resolved by two or more distinct transformations
+        */
+       
+        let map = tooltip._map;
+
+        let frameBounds = map.getContainer().getBoundingClientRect();
+        let tooltipBounds = tooltip._wrapper.getBoundingClientRect();
+        let staticOffset = {x: 30, y: 30};
+        let newTooltipPos = {x: event.containerPoint.x, y: event.containerPoint.y};
+        // OOB north   
+        if (tooltipBounds.top < frameBounds.top) {
+            newTooltipPos.y += (tooltipBounds.height + staticOffset.y);
+            tooltip.setLatLng(map.containerPointToLatLng(newTooltipPos));
+        }
+        // OOB West
+        if (tooltipBounds.left < frameBounds.left) {
+            newTooltipPos.x += (tooltipBounds.width * 0.5 + staticOffset.x);
+            tooltip.setLatLng(map.containerPointToLatLng(newTooltipPos));
+        }
+        // OOB South
+        if (tooltipBounds.bottom > frameBounds.bottom) {
+            newTooltipPos.y -= (tooltipBounds.height + staticOffset.y);
+            tooltip.setLatLng(map.containerPointToLatLng(newTooltipPos));
+        }
+        // OOB East
+        if (tooltipBounds.right > frameBounds.right) {
+            newTooltipPos.x -= (tooltipBounds.width * 0.5 + staticOffset.x);
+            tooltip.setLatLng(map.containerPointToLatLng(newTooltipPos));
+        }
+    }
 
     /** CLASS METHODS */
 
@@ -228,14 +280,12 @@ export default class Tooltip {
             l.bindPopup(this.layer);
             let tooltip = l.getPopup();
             tooltip.setLatLng(l.getLatLng());
-            tooltip.openOn(this.map);
+            tooltip.openOn(this.map); 
             this.clicked = true;
-
         }
     }
 
     replaceVars() {
-
         /*
         let output = document.createElement('div');
         output.innerHTML = this.html
