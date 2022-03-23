@@ -160,7 +160,9 @@ export default class Editor {
         let ep_a, ep_b;
 
         for (let point of points) {
-            setAddListeners(point);
+            if (point.layer) {
+                setAddListeners(point);
+            }
         }
 
         function setAddListeners(point) {
@@ -232,9 +234,9 @@ export default class Editor {
 
         let points = topology.get("points");
         for (const point of points) {
-            point.layer.removeEventListener("mouseover");
-            point.layer.removeEventListener("mouseout");
-            point.layer.removeEventListener("mousedown");
+            point.layer?.removeEventListener("mouseover");
+            point.layer?.removeEventListener("mouseout");
+            point.layer?.removeEventListener("mousedown");
         }
     }
 
