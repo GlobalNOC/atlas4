@@ -219,6 +219,7 @@ export default class Editor {
                     setHoverListener(ep_a);
                     //that.atlas.checkForOverlaps();
                     that.atlas.dispatch("update");
+                    that.atlas.dispatch('line-added', newLine)
                     ep_a = undefined;
                     ep_b = undefined;
                 }

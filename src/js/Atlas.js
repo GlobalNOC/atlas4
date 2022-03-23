@@ -973,10 +973,10 @@ export default class Atlas {
         else this.events[event] = [callback];
     }
 
-    dispatch(event) {
+    dispatch(event, payload) {
         if (this.events[event]) {
             for (const callback of this.events[event]) {
-                callback();
+                callback(payload);
             }
         }
     }
