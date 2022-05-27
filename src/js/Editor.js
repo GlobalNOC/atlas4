@@ -118,10 +118,12 @@ export default class Editor {
                 id: this.createUniqueName(6),
                 label: "NP",
                 shape: "circle",
+                // STRONGLY consider changing the below to latlng.wrap() in future version
                 lat: e.latlng.lat,
                 lng: e.latlng.lng,
                 name,
             };
+            // console.debug("wrap fix:", [obj.lat, obj.lng]);
             topology.endpoints[name] = obj;
             let node = topology.createPoint(name);
             node.layer.addTo(this.map);

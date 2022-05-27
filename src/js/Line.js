@@ -256,7 +256,7 @@ export default class Line {
     _createPath() {
         // !!! Loop is a fix for old map sources using improper lng values
         for (let ep of [this.a, this.b]) {
-            if (ep.lng && ep.lng > 20) {
+            if (ep.lng && ep.lng > 104) {
                 ep.lng = ep.lng - 360;
             }
         }

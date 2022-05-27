@@ -23,8 +23,13 @@ export default class Point {
         this.topology = topology.name;
         this.options = topology.options.pointOptions || this.defaults;
         this.legend = topology.options.legends.points;
-        /* DEVELOPMENT FIX FOR OLD MAP SOURCES */
-        if (this.point.lng > 20 && !topology.tile) {
+        // /* DEVELOPMENT FIX FOR OLD MAP SOURCES */
+        /* 
+            104°E is slightly east of Singapore, which is our temporary cutoff point.
+            Circuits that cross this longitude, for the time being, will need to have their 
+            nodes that are west of 104°E moved manually with map-builder, 360°E, as is done below.
+        */
+        if (this.point.lng > 104 && !topology.tile) {
             this.point.lng = this.point.lng - 360;
         }
 
