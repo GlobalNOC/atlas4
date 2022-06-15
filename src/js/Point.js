@@ -114,9 +114,8 @@ export default class Point {
      * toggle() - Toggle the current display of the point
      **/
     show() {
-        this.remove();
-        this.layer = this._createLayer();
         this.layer.addTo(this.map);
+        this.layer._path.style.display = "block";
     }
     hide() {
         this.layer._path.style.display = "none";

@@ -162,10 +162,9 @@ export default class Line {
      * toggle() - Toggle the current display of the line
      **/
     show() {
-        this.remove();
-        this.layer = this._createLayer();
         for (let line of this.layer) {
             line.addTo(this.map);
+            line._path.style.display = "block";
         }
     }
     hide() {

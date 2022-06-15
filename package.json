@@ -1,6 +1,6 @@
 {
   "name": "globalnoc-atlas4",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "description": "atlas4 library for web network topology maps",
   "private": true,
   "scripts": {
