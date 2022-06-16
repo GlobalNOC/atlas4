@@ -444,7 +444,7 @@ export default class Legend {
             const d     = decimals < 0 ? 0 : decimals;
             const sizes = [`${unit}`, `K${unit}`, `M${unit}`, `G${unit}`, `T${unit}`, `P${unit}`, `E${unit}`, `Z${unit}`, `Y${unit}`];
     
-            const i = Math.floor(Math.log(value) / Math.log(1000));
+            const i = value == 0 ? 0 : Math.floor(Math.log(Math.abs(value)) / Math.log(1000));
     
             return parseFloat((value / Math.pow(1000, i)).toFixed(d)) + ' ' + sizes[i];
         } else {
